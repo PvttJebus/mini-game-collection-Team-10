@@ -12,6 +12,8 @@ public class p1movement : MonoBehaviour
         private Rigidbody rigidBody;
         public float HandleSpeed = 14f;
         private Vector3 maxSpeed;
+        public float rotationSpeed = 1f;
+        public float angleDrag = 100f;
 
 
 
@@ -19,6 +21,7 @@ public class p1movement : MonoBehaviour
         {
             rigidBody = GetComponent<Rigidbody>();
             maxSpeed = new Vector3(HandleSpeed, 0, HandleSpeed);
+            rigidBody.angularDrag = angleDrag;
         }
 
         // Update is called once per frame
@@ -26,11 +29,11 @@ public class p1movement : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.W))
                 if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
-                    rigidBody.AddForce(-160, 0, 0, ForceMode.Acceleration);
+                    rigidBody.AddForce(-10, 0, 0, ForceMode.Acceleration);
 
             if (Input.GetKey(KeyCode.S))
                 if (rigidBody.velocity.x < maxSpeed.x)
-                    rigidBody.AddForce(60, 0, 0, ForceMode.Acceleration);
+                    rigidBody.AddForce(10, 0, 0, ForceMode.Acceleration);
 
             if (Input.GetKey(KeyCode.A))
                 if (Mathf.Abs(rigidBody.velocity.z) < maxSpeed.z)
@@ -39,6 +42,19 @@ public class p1movement : MonoBehaviour
             if (Input.GetKey(KeyCode.D))
                 if (rigidBody.velocity.z < maxSpeed.z)
                     rigidBody.AddForce(0, 0, 60, ForceMode.Acceleration);
+
+
+            if (Input.GetKey(KeyCode.Q))
+            {
+                
+                rigidBody.AddTorque(Vector3.up * -rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            }
+
+            if (Input.GetKey(KeyCode.E))
+            {
+                
+                rigidBody.AddTorque(Vector3.up * rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            }
         }
 
     }
