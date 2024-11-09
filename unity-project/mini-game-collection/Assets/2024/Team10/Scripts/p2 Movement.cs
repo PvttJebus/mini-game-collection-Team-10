@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace MiniGameCollection.Games2024.Team10
 {
     // script code
 
-public class p1movement : MonoBehaviour
-{
+    public class p2movement : MonoBehaviour
+    {
         private Rigidbody rigidBody;
         public float HandleSpeed = 14f;
         private Vector3 maxSpeed;
@@ -19,14 +18,7 @@ public class p1movement : MonoBehaviour
         public float dashDuration = 0f;
         public float dashUses = 3f;
         public Renderer playerRender;
-        public Color originalGreen;
-
-        //float moveX = ArcadeInput.Player1.AxisX;
-        //bool moveDown = false;
-        //bool moveLeft = false;
-        //bool moveRight = false;
-        //bool beamButton = false;
-        //bool dashButton = false;
+        public Color originalRed;
 
 
         void Start()
@@ -35,7 +27,7 @@ public class p1movement : MonoBehaviour
             maxSpeed = new Vector3(HandleSpeed, 0, HandleSpeed);
             rigidBody.angularDrag = angleDrag;
             //playerRender = GetComponent<Renderer>();
-            originalGreen = playerRender.material.color;
+            originalRed = playerRender.material.color;
         }
 
         // Update is called once per frame
@@ -44,44 +36,44 @@ public class p1movement : MonoBehaviour
             float xForceAdjustments = 25f;
             float zForceAdjustments = 25f;
             maxSpeed = new Vector3(HandleSpeed, 0, HandleSpeed);
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.LeftArrow))
                 if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
                     rigidBody.AddForce(-xForceAdjustments * dashMultiplyer, 0, 0, ForceMode.Acceleration);
 
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.RightArrow))
                 if (rigidBody.velocity.x < maxSpeed.x)
                     rigidBody.AddForce(xForceAdjustments * dashMultiplyer, 0, 0, ForceMode.Acceleration);
 
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.DownArrow))
                 if (Mathf.Abs(rigidBody.velocity.z) < maxSpeed.z)
                     rigidBody.AddForce(0, 0, -zForceAdjustments * dashMultiplyer, ForceMode.Acceleration);
 
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.UpArrow))
                 if (rigidBody.velocity.z < maxSpeed.z)
                     rigidBody.AddForce(0, 0, zForceAdjustments * dashMultiplyer, ForceMode.Acceleration);
 
 
-            //if (Input.GetKey(KeyCode.Q))
-            //{
-                
-            //    rigidBody.AddTorque(Vector3.up * -rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
-            //}
+            if (Input.GetKey(KeyCode.Q))
+            {
 
-            //if (Input.GetKey(KeyCode.E))
-            //{
-                
-            //    rigidBody.AddTorque(Vector3.up * rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
-            //}
+                rigidBody.AddTorque(Vector3.up * -rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            }
 
             if (Input.GetKey(KeyCode.E))
+            {
+
+                rigidBody.AddTorque(Vector3.up * rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            }
+
+            if (Input.GetKey(KeyCode.Comma))
             {
                 if (dashUses > 0f && dashDuration < 0f)
                 {
                     dashUses--;
-                    dashMultiplyer = dashSpeed;                   
+                    dashMultiplyer = dashSpeed;
                     dashDuration = 5f;
-                    playerRender.material.color = Color.blue;
-                    
+                    playerRender.material.color = Color.magenta;
+
                 }
             }
 
@@ -92,8 +84,8 @@ public class p1movement : MonoBehaviour
             if (dashDuration < 0f)
             {
                 dashMultiplyer = 1f;
-                playerRender.material.color = originalGreen;
-                
+                playerRender.material.color = originalRed;
+
             }
 
         }

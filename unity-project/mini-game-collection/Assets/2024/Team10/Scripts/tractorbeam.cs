@@ -24,7 +24,7 @@ public class tractorbeam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        beamActivated = Input.GetKeyDown(KeyCode.Space);
+        beamActivated = Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown (KeyCode.Period);
         TractorBeam();
 
         if (beamCooldown != 0f)

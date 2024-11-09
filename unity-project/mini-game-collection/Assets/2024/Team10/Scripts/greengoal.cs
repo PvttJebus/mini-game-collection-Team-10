@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class redgoal : MonoBehaviour
+public class greengoal : MonoBehaviour
 {
     public GameObject miniGameScore;
     public MiniGameScoreUI scoreUI;
@@ -65,10 +65,10 @@ public class redgoal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Puck"))
         {
-            scoreUI.IncrementPlayerScore(1);
+            scoreUI.IncrementPlayerScore(2);
             hasScored = true;
 
-            goalUI.text = "Green Scores!!";
+            goalUI.text = "Red Scores!!";
 
  
         }
