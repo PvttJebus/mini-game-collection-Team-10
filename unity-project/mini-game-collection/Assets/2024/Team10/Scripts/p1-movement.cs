@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace MiniGameCollection.Games2024.Team10
 {
     // script code
 
-    public class p2movement : MonoBehaviour
-    {
+public class p1movement : MonoBehaviour
+{
         private Rigidbody rigidBody;
         public float HandleSpeed = 14f;
         private Vector3 maxSpeed;
@@ -18,7 +19,12 @@ namespace MiniGameCollection.Games2024.Team10
         public float dashDuration = 0f;
         public float dashUses = 3f;
         public Renderer playerRender;
-        public Color originalRed;
+        public Color originalGreen;
+        float xForceAdjustments = 25f;
+        float zForceAdjustments = 25f;
+
+        //Rotation
+        Vector3 movementDirect = Vector3.zero;
 
 
         void Start()
@@ -27,52 +33,74 @@ namespace MiniGameCollection.Games2024.Team10
             maxSpeed = new Vector3(HandleSpeed, 0, HandleSpeed);
             rigidBody.angularDrag = angleDrag;
             //playerRender = GetComponent<Renderer>();
-            originalRed = playerRender.material.color;
+            originalGreen = playerRender.material.color;
         }
 
         // Update is called once per frame
         void Update()
         {
-            float xForceAdjustments = 25f;
-            float zForceAdjustments = 25f;
-            maxSpeed = new Vector3(HandleSpeed, 0, HandleSpeed);
-            if (Input.GetKey(KeyCode.LeftArrow))
+            PlayerMovement();
+            PlayerDash();
+           
+
+        }
+
+
+        public void PlayerMovement()
+        {
+            if (ArcadeInput.Player1.Left.Pressed || ArcadeInput.Player1.Left.Down)
+            {
                 if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
                     rigidBody.AddForce(-xForceAdjustments * dashMultiplyer, 0, 0, ForceMode.Acceleration);
 
-            if (Input.GetKey(KeyCode.RightArrow))
+                movementDirect.z += 1f;
+            }
+
+            if (ArcadeInput.Player1.Right.Pressed || ArcadeInput.Player1.Right.Down)
+            {
                 if (rigidBody.velocity.x < maxSpeed.x)
                     rigidBody.AddForce(xForceAdjustments * dashMultiplyer, 0, 0, ForceMode.Acceleration);
+                movementDirect.z -= 1f;
+            }
 
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (ArcadeInput.Player1.Down.Pressed || ArcadeInput.Player1.Right.Down)
+            {
                 if (Mathf.Abs(rigidBody.velocity.z) < maxSpeed.z)
                     rigidBody.AddForce(0, 0, -zForceAdjustments * dashMultiplyer, ForceMode.Acceleration);
 
-            if (Input.GetKey(KeyCode.UpArrow))
+                movementDirect.x -= 1f;
+            }
+            if (ArcadeInput.Player1.Up.Pressed || ArcadeInput.Player1.Right.Down)
+            {
                 if (rigidBody.velocity.z < maxSpeed.z)
                     rigidBody.AddForce(0, 0, zForceAdjustments * dashMultiplyer, ForceMode.Acceleration);
-
-
-            if (Input.GetKey(KeyCode.Q))
-            {
-
-                rigidBody.AddTorque(Vector3.up * -rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                movementDirect.x += 1f;
             }
 
-            if (Input.GetKey(KeyCode.E))
+
+            if (movementDirect != Vector3.zero)
             {
+                movementDirect.Normalize();
+                movementDirect.y = 0f;
 
-                rigidBody.AddTorque(Vector3.up * rotationSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                Quaternion targetRotation = Quaternion.LookRotation(movementDirect);
+
+                float rotationSpeed = 90f;
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
             }
+        }
 
-            if (Input.GetKey(KeyCode.Comma))
+        public void PlayerDash()
+        {
+            if (ArcadeInput.Player1.Action1.Pressed || Input.GetKeyDown(KeyCode.Q))
             {
                 if (dashUses > 0f && dashDuration < 0f)
                 {
                     dashUses--;
                     dashMultiplyer = dashSpeed;
                     dashDuration = 5f;
-                    playerRender.material.color = Color.magenta;
+                    playerRender.material.color = Color.blue;
 
                 }
             }
@@ -84,10 +112,9 @@ namespace MiniGameCollection.Games2024.Team10
             if (dashDuration < 0f)
             {
                 dashMultiplyer = 1f;
-                playerRender.material.color = originalRed;
+                playerRender.material.color = originalGreen;
 
             }
-
         }
 
     }
