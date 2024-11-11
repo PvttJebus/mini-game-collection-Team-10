@@ -5,8 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - CinemachineTarget
-  - Puck
-  - World
   layers:
   - Default
   - TransparentFX
@@ -14,9 +12,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Puck
-  - Players
-  - Divider
+  - 
+  - 
+  - 
   - 
   - 
   - 
