@@ -27,6 +27,7 @@ namespace MiniGameCollection.Games2024.Team10
         // Update is called once per frame
         void Update()
         {
+
             beamActivated = Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Period);
             TractorBeam();
 
@@ -40,11 +41,12 @@ namespace MiniGameCollection.Games2024.Team10
 
         public void TractorBeam()
         {
+
             //Debug.DrawRay(playerTransform.position, -playerTransform.right * 5, Color.red, 2f);
             if (isHolding == false && beamActivated == true)
 
             {
-                if (itemInBeam != null && itemInBeam != CompareTag("World"))
+                if (itemInBeam != null)
                 {
                     itemInBeam.gameObject.transform.position = holdLocation.transform.position;
                     isHolding = true;
@@ -52,7 +54,7 @@ namespace MiniGameCollection.Games2024.Team10
             }
             else if (isHolding == true && beamActivated == false)
             {
-                if (itemInBeamRB != null && itemInBeam != CompareTag("World"))
+                if (itemInBeamRB != null)
                     itemInBeam.gameObject.transform.position = holdLocation.transform.position;
             }
             else if (isHolding == true && beamActivated == true)
@@ -65,7 +67,8 @@ namespace MiniGameCollection.Games2024.Team10
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Puck"))
+            bool hasPuckTag = other.GetComponent<pucktag>() != null;
+            if (hasPuckTag == true)
             {
                 if (beamCooldown == 0)
                 {
@@ -77,7 +80,8 @@ namespace MiniGameCollection.Games2024.Team10
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("Puck"))
+            bool hasPuckTag = other.GetComponent<pucktag>() != null;
+            if (hasPuckTag == true)
             {
                 itemInBeam = other.gameObject;
                 itemInBeamRB = other.GetComponent<Rigidbody>();

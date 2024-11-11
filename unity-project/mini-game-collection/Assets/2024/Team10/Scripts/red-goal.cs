@@ -65,7 +65,8 @@ namespace MiniGameCollection.Games2024.Team10
 
         public void OnCollisionExit(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Puck"))
+            bool hasPuckTag = collision.gameObject.GetComponent<pucktag>() != null;
+            if (hasPuckTag == true)
             {
                 scoreUI.IncrementPlayerScore(1);
                 hasScored = true;
